@@ -8,7 +8,7 @@ from database import  Data
 from style import style
 
 
-class Altas(tk.Toplevel):
+class Clientes(tk.Toplevel):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
         

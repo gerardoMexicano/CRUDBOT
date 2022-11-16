@@ -2,7 +2,11 @@ import tkinter as tk
 from style import styles
 
 from screens.Altas import Altas
-
+from screens.Cope import Cope
+from screens.Clientes import Clientes
+from screens.Empresas import Empresas
+from screens.Solicitudes import Solicitudes
+ 
 class Manager(tk.Tk):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -54,7 +58,7 @@ class Manager(tk.Tk):
         tk.Button(
             self,
             text="COPE",
-            command=lambda: print("has clicado  iniciar bot"),
+            command=self.camb_cope,
             **styles.STYLE, 
             relief=tk.FLAT, 
             activebackground=styles.BACKGROUND,
@@ -65,7 +69,7 @@ class Manager(tk.Tk):
         tk.Button(
             self,
             text="Solicitud",
-            command=lambda: print("has clicado  iniciar bot"),
+            command=self.camb_solicitud,
             **styles.STYLE, 
             relief=tk.FLAT, 
             activebackground=styles.BACKGROUND,
@@ -76,7 +80,7 @@ class Manager(tk.Tk):
         tk.Button(
             self,
             text="Empresas",
-            command=lambda: print("has clicado  iniciar bot"),
+            command=self.camb_empresa,
             **styles.STYLE, 
             relief=tk.FLAT, 
             activebackground=styles.BACKGROUND,
@@ -87,7 +91,7 @@ class Manager(tk.Tk):
         tk.Button(
             self,
             text="Clientes",
-            command=lambda: print("has clicado  iniciar bot"),
+            command=self.camb_clientes,
             **styles.STYLE, 
             relief=tk.FLAT, 
             activebackground=styles.BACKGROUND,
@@ -101,4 +105,13 @@ class Manager(tk.Tk):
        
 
     def camb_cope(self):
-        pass
+        self.cope=Cope()
+
+    def camb_empresa(self):
+        self.empresa=Empresas()
+
+    def camb_solicitud(self):
+        self.solicitud=Solicitudes()
+
+    def camb_clientes(self):
+        self.clientes=Clientes()

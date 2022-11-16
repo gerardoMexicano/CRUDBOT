@@ -8,11 +8,11 @@ from database import  Data
 from style import style
 
 
-class Altas(tk.Toplevel):
+class Solicitudes(tk.Toplevel):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        self.title("Altas")
+        self.title("Solicitudes")
         self.nombre = StringVar()
         self.cut = StringVar()
         self.basededatos=Data()
@@ -36,7 +36,7 @@ class Altas(tk.Toplevel):
         tk.Label(self.frame1,text='opciones',bg='white',fg='black',font=('Kaufmann BT', 13,'bold')).grid(column=2,row = 0)
         tk.Button(self.frame1,text='Refrescar',**style.STYLEB,command=lambda:self.refrescar()).grid(column=2,row=1,pady=5)
         #tk.Button(self.frame1, text="Volver", command=self.volver).grid(column=2,row = 1)
-        tk.Label(self.frame1,text='Agregar y Actualizar datos ALTAS',bg='white',fg='black',font=('Kaufmann BT', 13,'bold')).grid(columnspan=2, column=0,row = 0,pady=5)
+        tk.Label(self.frame1,text='Agregar y Actualizar datos Solicitudes',bg='white',fg='black',font=('Kaufmann BT', 13,'bold')).grid(columnspan=2, column=0,row = 0,pady=5)
         tk.Label(self.frame1,text='Nombre',**style.STYLEL).grid(column=0,row=1,pady=5)
         tk.Label(self.frame1,text='Abreviatura',**style.STYLEL).grid(column=0,row=2,pady=5)
 
@@ -75,7 +75,7 @@ class Altas(tk.Toplevel):
         
     def llenarregistros(self):
         #fill list
-        elements= self.basededatos.returtALLAltas()
+        elements= self.basededatos.returtALLsolicitudes()
         for i in elements:
             self.tabla.insert('',tk.END,values = i)
     
@@ -88,7 +88,7 @@ class Altas(tk.Toplevel):
         nombre=self.nombre.get()
         cut=self.cut.get()
         if  nombre!= "" and cut!="":
-            self.basededatos.insertaltas(nombre,cut)
+            self.basededatos.insertsolicitudes(nombre,cut)
             messagebox.showinfo(title="Alerta",message="se inserto correctamente")
             self.Eliminartabla()
             self.llenarregistros()
@@ -121,13 +121,13 @@ class Altas(tk.Toplevel):
         id=self.obtenerid()
         nombre=self.nombre.get()
         cut=self.cut.get()
-        self.basededatos.actualizaraltas(id,nombre,cut)
+        self.basededatos.actualizarsolicitudes(id,nombre,cut)
         self.limpiar_campos()
         self.refrescar()
 
     def borrar(self):
         id=self.obtenerid()
-        self.basededatos.deletealtas(id)
+        self.basededatos.deletesolicitudes(id)
         self.limpiar_campos()
         self.refrescar()
 
