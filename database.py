@@ -92,6 +92,13 @@ class Data():
         self.cursor.execute(sql)
         self.conexion.commit()
 
+    def returtALLclientes(self):
+        sql="SELECT * from cliente"
+        self.cursor.execute(sql)
+        consulta=self.cursor.fetchall()
+        print(consulta)
+        return consulta
+
 
 
 if __name__ == "__main__":

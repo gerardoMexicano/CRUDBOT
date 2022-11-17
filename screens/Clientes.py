@@ -58,15 +58,20 @@ class Clientes(tk.Toplevel):
         self.cut.set('')
       
     def dibujarTabla(self):
-        self.tabla=ttk.Treeview(self.frame2,columns=(1,2,3),show="headings",height="8" )  
+        self.tabla=ttk.Treeview(self.frame2,columns=(1,2,3,4,5,6,7,8),show="headings",height="8" )  
         style = ttk.Style()
         style.theme_use("clam")
         style.configure("Treeview.Heading", background="#0051C8",relief="flat",foreground="white")
         style.map("Treeview", background=[('selected', 'yellow')], foreground=[('selected', 'black')])
 
         self.tabla.heading(1,text="Id")
-        self.tabla.heading(2,text="Nombre")
-        self.tabla.heading(3,text="Abreviatura")
+        self.tabla.heading(2,text="Referencia")
+        self.tabla.heading(3,text="Alta")
+        self.tabla.heading(4,text="Folio")
+        self.tabla.heading(5,text="Cope")
+        self.tabla.heading(6,text="Solicitud")
+        self.tabla.heading(7,text="Empresa")
+        self.tabla.heading(8,text="Comentario")
         self.tabla.pack(
         **styles.PACK
         )
@@ -75,7 +80,7 @@ class Clientes(tk.Toplevel):
         
     def llenarregistros(self):
         #fill list
-        elements= self.basededatos.returtALLAltas()
+        elements= self.basededatos.returtALLclientes()
         for i in elements:
             self.tabla.insert('',tk.END,values = i)
     
