@@ -6,6 +6,8 @@ from time import strftime
 import pandas as pd
 from database import  Data
 from style import style
+import Bot2
+from screens.Mensaje import Mensaje
 
 
 class Clientes(tk.Toplevel):
@@ -16,6 +18,7 @@ class Clientes(tk.Toplevel):
         self.nombre = StringVar()
         self.cut = StringVar()
         self.basededatos=Data()
+        self.bot= Bot2
         self.init_widgets()
 
 
@@ -36,29 +39,54 @@ class Clientes(tk.Toplevel):
         tk.Label(self.frame1,text='opciones',bg='white',fg='black',font=('Kaufmann BT', 13,'bold')).grid(column=2,row = 0)
         tk.Button(self.frame1,text='Refrescar',**style.STYLEB,command=lambda:self.refrescar()).grid(column=2,row=1,pady=5)
         #tk.Button(self.frame1, text="Volver", command=self.volver).grid(column=2,row = 1)
-        tk.Label(self.frame1,text='Agregar y Actualizar datos ALTAS',bg='white',fg='black',font=('Kaufmann BT', 13,'bold')).grid(columnspan=2, column=0,row = 0,pady=5)
+        tk.Label(self.frame1,text='Respuesta a Clientes',bg='white',fg='black',font=('Kaufmann BT', 13,'bold')).grid(columnspan=2, column=0,row = 0,pady=5)
         tk.Label(self.frame1,text='Nombre',**style.STYLEL).grid(column=0,row=1,pady=5)
         tk.Label(self.frame1,text='Abreviatura',**style.STYLEL).grid(column=0,row=2,pady=5)
 
         tk.Entry(self.frame1,textvariable=self.nombre,**style.STYLEE).grid(column=1,row=1)
         tk.Entry(self.frame1,textvariable=self.cut,**style.STYLEE).grid(column=1,row=2)
         
-        tk.Button(self.frame1,text='AÑADIR DATOS',**style.STYLEB,command=lambda:self.agregar()).grid(column=2,row=2,pady=5,padx=5)
-        tk.Button(self.frame1,text='LIMPIAR CAMPOS',**style.STYLEB,command=self.limpiar_campos).grid(column=2,row=3,pady=5,padx=5)
-        tk.Button(self.frame1,text='ACTUALIZAR',**style.STYLEB,command=lambda:self.actualizar()).grid(column=2,row=4,pady=5,padx=5)
+        tk.Button(self.frame1,text='LISTO',**style.STYLEB,command=lambda:self.listo()).grid(column=2,row=2,pady=5,padx=5)
+        tk.Button(self.frame1,text='COMUNICATE',**style.STYLEB,command=lambda:self.comunicate()).grid(column=2,row=3,pady=5,padx=5)
+        tk.Button(self.frame1,text='Personalizado',**style.STYLEB,command=lambda:self.personal()).grid(column=2,row=4,pady=5,padx=5)
         tk.Button(self.frame1,text='ELIMINAR',**style.STYLEB,command=lambda:self.borrar()).grid(column=2,row=5,pady=5,padx=5)
 
         self.dibujarTabla()
 
         #tabla
-        
+
+    def listo(self):
+        id=self.obtenerid()
+        chat_id=self.basededatos.obtenerclient(id)
+        txt="Su Solicitud ha sido atendida"
+        self.bot.mensaje(chat_id=chat_id,mensaje=txt)
+        self.borrar()
+
+
+
+    def comunicate(self):
+        id=self.obtenerid()
+        chat_id=self.basededatos.obtenerclient(id)
+        txt="Comunicate con tu proveedor"
+        self.bot.mensaje(chat_id=chat_id,mensaje=txt)
+        self.borrar()
+    def personal(self): 
+        id=self.obtenerid()
+        self.chat_id=self.basededatos.obtenerclient(id)
+        self.mensaje=tk.Toplevel
+        self.mensaje.geometry("400x300")
+        self.mensaje.title("Mensaje")
+        self.mensaje.titulo=tk.Label(text="Mensaje al contacto")
+        def passt(self):
+            pass
+
 
     def limpiar_campos(self):
         self.nombre.set('')
         self.cut.set('')
       
     def dibujarTabla(self):
-        self.tabla=ttk.Treeview(self.frame2,columns=(1,2,3,4,5,6,7,8),show="headings",height="8" )  
+        self.tabla=ttk.Treeview(self.frame2,columns=(1,2,3,4,5,6,7),show="headings",height="8" )  
         style = ttk.Style()
         style.theme_use("clam")
         style.configure("Treeview.Heading", background="#0051C8",relief="flat",foreground="white")
@@ -71,7 +99,6 @@ class Clientes(tk.Toplevel):
         self.tabla.heading(5,text="Cope")
         self.tabla.heading(6,text="Solicitud")
         self.tabla.heading(7,text="Empresa")
-        self.tabla.heading(8,text="Comentario")
         self.tabla.pack(
         **styles.PACK
         )
@@ -132,7 +159,7 @@ class Clientes(tk.Toplevel):
 
     def borrar(self):
         id=self.obtenerid()
-        self.basededatos.deletealtas(id)
+        self.basededatos.deleteclientes(id)
         self.limpiar_campos()
         self.refrescar()
 

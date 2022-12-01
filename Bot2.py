@@ -348,7 +348,9 @@ def bot_mensajes_texto(message):
        
         bot.send_message(message.chat.id,txt)
         """
-
+#mensajes
+def mensaje(chat_id,mensaje):
+    bot.send_message(chat_id=chat_id,text=mensaje)
 class ProductsCallbackFilter(AdvancedCustomFilter):
     key = 'config'
 
@@ -369,6 +371,9 @@ def detener():
 
 if __name__ == '__main__':
     print('Iniciando el bot')
-    bot.add_custom_filter(ProductsCallbackFilter())
-    bot.infinity_polling()
+    #bot.add_custom_filter(ProductsCallbackFilter())
+    #bot.infinity_polling()
+    mensajes="1129370188"
+    text="hola"
+    mensaje(mensajes,text)
     print('fin')

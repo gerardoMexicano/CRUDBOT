@@ -101,6 +101,18 @@ class Data():
         
         return consulta
 
+    def deleteclientes(self,ref):
+        sql="DELETE from cliente where cliente_id = '{}'".format(ref)
+        self.cursor.execute(sql)
+        self.conexion.commit()
+
+    def obtenerclient(self,ref):
+        sql="SELECT cliente_ref from cliente where cliente_id = '{}'".format(ref)
+        self.cursor.execute(sql)
+        consulta=self.cursor.fetchall()
+        num=consulta[0][0]
+        return num
+
     def returtALLclientes2(self):
         sql="SELECT * from cliente2"
         self.cursor.execute(sql)
@@ -117,4 +129,7 @@ class Data():
 
 if __name__ == "__main__":
     c=Data()
-    c.eliminarregiclien2()
+    num=6
+    c.obtenerclient(num)
+    tel= c.obtenerclient(num)
+    print(tel)
