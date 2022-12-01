@@ -74,8 +74,10 @@ class Data():
         sql="SELECT * from solicitud"
         self.cursor.execute(sql)
         consulta=self.cursor.fetchall()
-        print(consulta)
+        
         return consulta
+
+    
 
     def insertsolicitudes(self,nombre,cut):
         sql= "INSERT INTO solicitud(solicitud_name, solicitud_cut) VALUES('{}', '{}')".format(nombre,cut)
@@ -96,11 +98,23 @@ class Data():
         sql="SELECT * from cliente"
         self.cursor.execute(sql)
         consulta=self.cursor.fetchall()
-        print(consulta)
+        
         return consulta
+
+    def returtALLclientes2(self):
+        sql="SELECT * from cliente2"
+        self.cursor.execute(sql)
+        consulta=self.cursor.fetchall()
+        
+        return consulta
+
+    def eliminarregiclien2(self):
+        sql="DELETE from cliente2"
+        self.cursor.execute(sql)
+        self.conexion.commit()
 
 
 
 if __name__ == "__main__":
     c=Data()
-    c.returtALLsolicitudes()
+    c.eliminarregiclien2()

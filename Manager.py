@@ -1,6 +1,8 @@
 import tkinter as tk
 import threading
 import time
+import sys
+from ExportExcel import *
 from style import styles
 
 
@@ -9,7 +11,7 @@ from screens.Cope import Cope
 from screens.Clientes import Clientes
 from screens.Empresas import Empresas
 from screens.Solicitudes import Solicitudes
-from Bot import *
+import Bot2
  
 class Manager(tk.Tk):
     def __init__(self,*args,**kwargs):
@@ -17,7 +19,7 @@ class Manager(tk.Tk):
         self.configure(background=styles.BACKGROUND)
         self.text= tk.StringVar()
         self.onoff=2
-        self.bot=recibir_mensajes
+        self.bot= Bot2
         self.text.set("Iniciarbot")
         self.init_widgets()
 
@@ -40,8 +42,8 @@ class Manager(tk.Tk):
         ).pack(
             **styles.PACK
         )
-        self.botoni=tk.Button(self,textvariable=self.text, command=self.ibot,**styles.STYLE,relief=tk.FLAT,activebackground=styles.BACKGROUND,activeforeground=styles.TEXT).pack(**styles.PACK)
-
+        self.botoni=tk.Button(self,textvariable=self.text, command=self.export,**styles.STYLE,relief=tk.FLAT,activebackground=styles.BACKGROUND,activeforeground=styles.TEXT).pack(**styles.PACK)
+        self.botonapa=tk.Button(self,textvariable=self.text, command=self.end,**styles.STYLE,relief=tk.FLAT,activebackground=styles.BACKGROUND,activeforeground=styles.TEXT).pack(**styles.PACK)
         self.botonaltas=tk.Button(
             self,
             text="Altas",
@@ -114,15 +116,6 @@ class Manager(tk.Tk):
     def camb_clientes(self):
         self.clientes=Clientes()
     
-    def ibot(self):
-        timer_runs=threading.Event()
-        timer_runs.set()
-        hilo=threading.Thread(target=self.bot,args=(timer_runs)) 
-        hilo.start()
-        time.sleep(10)
-        timer_runs.clear()
-        print("proceso detenido")
-
 
     def botes(self):
         try:
@@ -143,5 +136,45 @@ class Manager(tk.Tk):
                 
         except:
            pass
+    def inibot(self):
+        try:
+           self.bot.iniciarbot()
+        except:
+            pass
+    def apagabot(self):
+        try:
+            self.botstop()
+        except:
+            pass
+   
+    
+    def botstop(self):
+        self.bot.detener()
+    def export(self):
+        self.event=threading.Event()
+        excel=threading.Thread(target=self.exportacion,args=(self.event,))
+        excel.start()
+    def exportacion2(self):
+        func=ExportExcel()
+        func.exportar()
 
-            
+    def exportacion(self,event):
+        x=0
+        func=ExportExcel()
+        while True:
+            if event.is_set():
+                break
+            time.sleep(1)
+            x+=1
+            var=x%60
+            if (x>0 and (var==0)):
+                func.exportar()
+                func.eliminarregistros()
+                x=0
+    def end(self):
+        self.event.set()
+
+
+
+
+
