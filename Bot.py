@@ -1,7 +1,7 @@
 from ast import Call
 from email.message import Message
 from subprocess import call
-from numpy import number
+
 from requests import delete
 from sqlalchemy import null
 from telegram import Chat, InlineKeyboardMarkup, ReplyMarkup

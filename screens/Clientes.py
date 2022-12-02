@@ -14,7 +14,7 @@ class Clientes(tk.Toplevel):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        self.title("Altas")
+        self.title("Clientes")
         self.nombre = StringVar()
         self.cut = StringVar()
         self.basededatos=Data()

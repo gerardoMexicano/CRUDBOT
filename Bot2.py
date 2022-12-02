@@ -216,8 +216,10 @@ def respuesta_envios(call):
         Databot().insertclientes(mid,valta,vfolios,vcopes,vsolicitud,vempresa,vcomen)
         Databot().insertclientes2(mid,valta,vfolios,vcopes,vsolicitud,vempresa,vcomen)
         del usuarios[call.message.chat.id]
-        txt="Gracias Tu solicitud ha sido enviada"
-        bot.edit_message_text(chat_id=call.message.chat.id,message_id=call.message.message_id,text=texto)
+        txt="Gracias Tu solicitud ha sido enviada\n"
+        txt+="si deseas una nueva solicitud presiona\n"
+        txt+=""
+        bot.edit_message_text(chat_id=call.message.chat.id,message_id=call.message.message_id,parse_mode="html",text=texto)
         bot.send_message(call.message.chat.id,txt)
     if call.data=="cancelar":
         texto="se ha cancelado"
@@ -373,7 +375,4 @@ if __name__ == '__main__':
     print('Iniciando el bot')
     #bot.add_custom_filter(ProductsCallbackFilter())
     #bot.infinity_polling()
-    mensajes="1129370188"
-    text="hola"
-    mensaje(mensajes,text)
     print('fin')
