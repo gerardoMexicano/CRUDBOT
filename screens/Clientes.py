@@ -1,15 +1,16 @@
 import tkinter as tk
-from tkinter import Button,Entry,Label,ttk,PhotoImage
+from tkinter import Button,Entry,Label,ttk
 from style import styles
-from tkinter import StringVar, Scrollbar, Frame, messagebox
+from tkinter import StringVar, Scrollbar, Frame, messagebox,Text
+from tkinter import scrolledtext as st
 from time import strftime
 import pandas as pd
 from database import  Data
 from style import style
 import Bot2
-from screens.Mensaje import Mensaje
 
-
+#mas informacion en altas siguen el mismo proceso
+#excepto en este que hay una diferencia ya que usa caja texto
 class Clientes(tk.Toplevel):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,6 +20,8 @@ class Clientes(tk.Toplevel):
         self.cut = StringVar()
         self.basededatos=Data()
         self.bot= Bot2
+        self.texto=Text()
+        self.txtt=Text()
         self.init_widgets()
 
 
@@ -40,20 +43,22 @@ class Clientes(tk.Toplevel):
         tk.Button(self.frame1,text='Refrescar',**style.STYLEB,command=lambda:self.refrescar()).grid(column=2,row=1,pady=5)
         #tk.Button(self.frame1, text="Volver", command=self.volver).grid(column=2,row = 1)
         tk.Label(self.frame1,text='Respuesta a Clientes',bg='white',fg='black',font=('Kaufmann BT', 13,'bold')).grid(columnspan=2, column=0,row = 0,pady=5)
-        tk.Label(self.frame1,text='Nombre',**style.STYLEL).grid(column=0,row=1,pady=5)
-        tk.Label(self.frame1,text='Abreviatura',**style.STYLEL).grid(column=0,row=2,pady=5)
+        #tk.Label(self.frame1,text='Nombre',**style.STYLEL).grid(column=0,row=1,pady=5)
+        tk.Label(self.frame1,text='Escribe aqui tu mensaje',**style.STYLEL).grid(column=0,row=2,pady=5)
 
-        tk.Entry(self.frame1,textvariable=self.nombre,**style.STYLEE).grid(column=1,row=1)
-        tk.Entry(self.frame1,textvariable=self.cut,**style.STYLEE).grid(column=1,row=2)
-        
-        tk.Button(self.frame1,text='LISTO',**style.STYLEB,command=lambda:self.listo()).grid(column=2,row=2,pady=5,padx=5)
-        tk.Button(self.frame1,text='COMUNICATE',**style.STYLEB,command=lambda:self.comunicate()).grid(column=2,row=3,pady=5,padx=5)
-        tk.Button(self.frame1,text='Personalizado',**style.STYLEB,command=lambda:self.personal()).grid(column=2,row=4,pady=5,padx=5)
+        #tk.Entry(self.frame1,textvariable=self.nombre,**style.STYLEE).grid(column=1,row=1)
+        #tk.Entry(self.frame1,textvariable=self.cut,**style.STYLEE).grid(column=1,row=2)
+        self.texto=Text(self.frame1,width=40,height=5,**style.STYLEE)#necesita colocarse en una separada el grid
+        self.texto.grid(column=1,row=2)       #grid colocado si no retrna valores vacios
+        tk.Button(self.frame1,text='RESPONDER',**style.STYLEB,command=lambda:self.listo()).grid(column=2,row=3,pady=5,padx=5)
+        tk.Button(self.frame1,text='COMUNICATE',**style.STYLEB,command=lambda:self.comunicate()).grid(column=2,row=4,pady=5,padx=5)
+        tk.Button(self.frame1,text='Personalizado',**style.STYLEB,command=lambda:self.personal()).grid(column=2,row=2,pady=5,padx=5)
         tk.Button(self.frame1,text='ELIMINAR',**style.STYLEB,command=lambda:self.borrar()).grid(column=2,row=5,pady=5,padx=5)
 
         self.dibujarTabla()
 
         #tabla
+    #funciones de respuesta del bot
 
     def listo(self):
         id=self.obtenerid()
@@ -70,17 +75,20 @@ class Clientes(tk.Toplevel):
         txt="Comunicate con tu proveedor"
         self.bot.mensaje(chat_id=chat_id,mensaje=txt)
         self.borrar()
+
     def personal(self): 
         id=self.obtenerid()
-        self.chat_id=self.basededatos.obtenerclient(id)
-        self.mensaje=tk.Toplevel
-        self.mensaje.geometry("400x300")
-        self.mensaje.title("Mensaje")
-        self.mensaje.titulo=tk.Label(text="Mensaje al contacto")
-        def passt(self):
-            pass
+        chat_id=self.basededatos.obtenerclient(id)
+        self.txtt = self.texto#envia un mensaje personalizado lo escrito en el cuadro
+        txt=self.txtt.get('1.0','end')
+        if txt !='':
+            self.bot.mensaje(chat_id=chat_id,mensaje=txt)
+            self.borrar()
+        else:
+            messagebox.showinfo(title="Error",message="debes llenar los campos para enviar respuesta")
+        
 
-
+    #funciones del CRUD y LLENADO DE TABLAS
     def limpiar_campos(self):
         self.nombre.set('')
         self.cut.set('')

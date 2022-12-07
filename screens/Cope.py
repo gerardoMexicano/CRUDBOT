@@ -8,7 +8,7 @@ import pandas as pd
 from database import  Data
 from style import style
 
-
+#mas informacion en altas siguen el mismo proceso
 class Cope(tk.Toplevel):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)

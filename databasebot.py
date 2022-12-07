@@ -3,7 +3,12 @@ class Databot():
     def __init__(self):
         self.conexion=sqlite3.connect('db\\registros.db')
         self.cursor =self.conexion.cursor()
+    #crear un cursor o bueno la conexion con nuestra base de datos
 
+    
+
+    #consultas de base de datos estas se utilizan para el BOT
+    #si quiere modificarse el bot tendria que alterarse esta funcion y no comprometer el resto
     def returtALLAltas(self):
         sql="SELECT * from alta"
         self.cursor.execute(sql)
@@ -36,5 +41,5 @@ class Databot():
         self.cursor.execute(sql)
         self.conexion.commit()
 
-if __name__ == "__main__":
-    c=Databot()
+"""if __name__ == "__main__":
+    c=Databot()"""

@@ -1,19 +1,22 @@
-import tkinter as tk
-import threading
-import time
+import tkinter as tk #libreria para creacion de interfaz 
+import threading #libreria para ejecutar multihilos
+import time #libreria tiempo
 import sys
-from ExportExcel import *
-from style import styles
+from ExportExcel import * #libreria que generar nuestros archivos con el formato creado en este
+from style import styles #importa una serie de estilos para su uso practico 
 
-
+#importa las vista  interfaz graficas creada con tkinter 
 from screens.Altas import Altas
 from screens.Cope import Cope
 from screens.Clientes import Clientes
 from screens.Empresas import Empresas
 from screens.Solicitudes import Solicitudes
+
+#importa el codigo del bot 
 import Bot2
  
 class Manager(tk.Tk):
+    #inicializa todo el sistema bot
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.configure(background=styles.BACKGROUND)
@@ -21,11 +24,12 @@ class Manager(tk.Tk):
         self.onoff=2
         self.bot= Bot2
         self.text.set("Iniciarbot")
-        self.init_widgets()
+        self.init_widgets()# sejecuta toda la interfaz del programa se encuentra dentro de esta funcion
+
 
     def init_widgets(self):
-        self.title("controlador de BOT")
-        container= tk.Frame(self)
+        self.title("controlador de BOT")#titulo encabezado
+        container= tk.Frame(self)#se genera el frame principal
         container.pack(
             side=tk.TOP,
             fill=tk.BOTH,
@@ -34,6 +38,7 @@ class Manager(tk.Tk):
         container.configure(
             background=styles.BACKGROUND
         )
+        #etiqueta contiene el titulo
         tk.Label(
             self,
             text="Bienvenido al controlador",
@@ -42,8 +47,6 @@ class Manager(tk.Tk):
         ).pack(
             **styles.PACK
         )
-        self.botoni=tk.Button(self,textvariable=self.text, command=self.export,**styles.STYLE,relief=tk.FLAT,activebackground=styles.BACKGROUND,activeforeground=styles.TEXT).pack(**styles.PACK)
-        self.botonapa=tk.Button(self,textvariable=self.text, command=self.end,**styles.STYLE,relief=tk.FLAT,activebackground=styles.BACKGROUND,activeforeground=styles.TEXT).pack(**styles.PACK)
         self.botonaltas=tk.Button(
             self,
             text="Altas",
@@ -55,11 +58,12 @@ class Manager(tk.Tk):
         ).pack(
             **styles.PACK
         )
+        #botones tkinter
         tk.Button(
             self,
             text="COPE",
             command=self.camb_cope,
-            **styles.STYLE, 
+            **styles.STYLE, #desempaquetado del estilo
             relief=tk.FLAT, 
             activebackground=styles.BACKGROUND,
             activeforeground=styles.TEXT
@@ -99,7 +103,8 @@ class Manager(tk.Tk):
         ).pack(
             **styles.PACK
         )
-        
+    
+    #funciones para generar nuevas ventanas  por cada una una funcion
     def camb_altas(self):
         self.altas=Altas()
        
@@ -116,7 +121,7 @@ class Manager(tk.Tk):
     def camb_clientes(self):
         self.clientes=Clientes()
     
-
+    #funcion de prueba
     def botes(self):
         try:
             while self.onoff==2:
@@ -136,41 +141,43 @@ class Manager(tk.Tk):
                 
         except:
            pass
+    #funcion que inicia al bot
     def inibot(self):
         try:
+            #en el archivo bot existe una funcion que debe ejecutarse para que que este se inicie es lo que realiza
            self.bot.iniciarbot()
         except:
             pass
+
+    #apaga al bot llamando una funcion del clase bot que lo hace
     def apagabot(self):
         try:
             self.botstop()
         except:
             pass
-   
-    
     def botstop(self):
         self.bot.detener()
+
+    #este genera un hilo nuevo donde se ejcutara la funcion de exportar datos
     def export(self):
         self.event=threading.Event()
         excel=threading.Thread(target=self.exportacion,args=(self.event,))
         excel.start()
-    def exportacion2(self):
-        func=ExportExcel()
-        func.exportar()
-
+    #genera  los reportes llamando a la clase Exportexcel los genera cada tiempo que puede determinarse
     def exportacion(self,event):
         x=0
         func=ExportExcel()
         while True:
-            if event.is_set():
-                break
+            if event.is_set():#permite finalizar el hilo
+                break#
             time.sleep(1)
             x+=1
-            var=x%60
+            var=x%1800 #tiempo entre cada reporte se genere
             if (x>0 and (var==0)):
                 func.exportar()
                 func.eliminarregistros()
                 x=0
+    #finaliza el hilo de tal manera que cerrando la aplicacion esta deja de generar reportes
     def end(self):
         self.event.set()
 

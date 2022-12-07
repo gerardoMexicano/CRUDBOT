@@ -4,19 +4,19 @@ from style import styles
 from tkinter import StringVar, Scrollbar, Frame, messagebox
 from time import strftime
 import pandas as pd
-from database import  Data
+from database import  Data #importa las consultas paraCRUD
 from style import style
 
-
+#las vista Clientes,cope,Empresas,solicitudes siguen el mismo funcionamiento o similar almenos hasta que yo entregue el proyecto 2/12/2022
 class Altas(tk.Toplevel):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        self.title("Altas")
-        self.nombre = StringVar()
+        self.title("Altas")#titulo
+        self.nombre = StringVar()#variables que almacenan los datos son textbox
         self.cut = StringVar()
-        self.basededatos=Data()
-        self.init_widgets()
+        self.basededatos=Data()#inicializar las consultas para tener acceso de manera local
+        self.init_widgets()#incluye todo el diseño de la interfaz
 
 
     def init_widgets(self):
